@@ -1,6 +1,6 @@
-class Medicina(override var descripcion:String?,var nivelCura:Int?=null):Item(descripcion) {
+class Medicina(override var descripcion:String?,var nivelCura:Int):Item(descripcion) {
 
-    class Builder(var descripcion: String?=null, var nivelCura: Int?=null){
+    class Builder(var descripcion: String?=null, var nivelCura: Int){
 
         fun descripcion(descripcion: String):Builder{
             this.descripcion=descripcion

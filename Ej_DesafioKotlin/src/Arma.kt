@@ -1,6 +1,6 @@
-class Arma(override var descripcion:String?,var nivelFuerza:Int?=null):Item(descripcion) {
+class Arma(override var descripcion:String?,var nivelFuerza:Int):Item(descripcion) {
 
-    class Builder(var descripcion: String?=null, var nivelFuerza: Int?=null){
+    class Builder(var descripcion: String?=null, var nivelFuerza: Int){
 
         fun descripcion(descripcion: String):Builder{
             this.descripcion=descripcion
