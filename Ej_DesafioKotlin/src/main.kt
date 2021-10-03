@@ -18,32 +18,10 @@ fun main(){
     var listaTributosMuertos = ArrayList<Tributo>(0)
     var listaItems = ArrayList<Item>(0)
 
-    //var tipoItem:Int=-1
-
-    /*for(i in 0..99){
-        tipoItem=Random.nextInt(0,3)
-        when(tipoItem){
-            0 -> listaItems.add(Factoria.generarArma())
-            1 -> listaItems.add(Factoria.generarMedicina())
-            2 -> listaItems.add(Factoria.generarTrampa())
-        }
-    }*/
 
     var cap:Capitolio=Capitolio(listaItems,listaTributosMuertos)
 
     cap.rellenarItems() //Carga 100 objetos aleatorios en listaItems
-
-    /*
-    var tablero:ArrayList<ArrayList<Any?>> = ArrayList()
-    var filas:Int=5
-    var columnas:Int=5
-
-    for(i in 0..filas-1){
-        for(j in 0..columnas-1){
-            tablero[i][j]=null //Relleno tablero de nulls
-        }
-    }
-    */
 
     tableroJuego.soltarItems(cap,10)
 
@@ -51,38 +29,49 @@ fun main(){
 
     var tiempo:Int=1
     var ganador:Int=-1
+    var distritoJugando:String=""
+    var tableroAuxiliar=Array(filas){Array<Any?>(columnas){null} } //Para controlar que nadie se mueva dos veces en un turno
 
     do{ //Comienza el juego
-
+        println("Tiempo: "+tiempo+"\n")
         if(tiempo%2==0){ //Cada 2 segundos
 
+            for(i in 0..filas-1) {
+                for (j in 0..columnas-1) {
+                    tableroAuxiliar[i][j] = tableroJuego.tablero[i][j] //Copia el tablero actual
+                }
+            }
+
             for(i in 0..filas-1){
-                for(j in 0..columnas-1) {
-                    if(tableroJuego.tablero[i][j] is Tributo){
+                for(j in 0..columnas-1){
+                    if(tableroAuxiliar[i][j] is Tributo){
+                    //if(tableroJuego.tablero[i][j] is Tributo)
                         if(cap.listaTributosMuertos.size<9){
+                            distritoJugando=(tableroJuego.tablero[i][j] as Tributo).distrito
                             ganador=(tableroJuego.tablero[i][j] as Tributo).moverse(tableroJuego,i,j,cap)
-                            println("GANADOR: "+ganador)
+                            //println("GANADOR: "+ganador)
                             when(ganador){
-                                0 -> println("El que se mueve ha ganado\n")
-                                1 -> println("El que se mueve ha muerto\n")
+                                0 -> println("El tributo del distrito "+distritoJugando+" vence a su rival y ocupa su posicion\n ")
+                                1 -> println("El tributo del distrito "+distritoJugando+" muere a manos y de un rival\n ")
+                                2 -> println("El tributo del distrito "+distritoJugando+" ha muerto al pisar una trampa\n")
                             }
-                            println("MUERTOS: "+cap.listaTributosMuertos.size)
                         }
                     }
                 }
             }
-
+            println("Han muerto "+listaTributosMuertos.size+ " tributos\n")
         }
 
         if(tiempo%5==0){
             tableroJuego.soltarItems(cap,4)
             tableroJuego.mostrarTablero()
         }
-        println(listaTributosMuertos.size)
         tiempo++
+        //Thread.sleep(500)
+
     }while(cap.listaTributosMuertos.size<9)
 
-    //--------------------------------------------------ARREGLAR HACIENDO TURNO DE MOVIMIENTOS SOBRE TABLERO AUXILIAR O MEJOR ASEGURANDO QUE SOLO SE MUEVAN UNA VEZ????
-    //--------------------------------------------------Y CONTROLAR LOS PRINT QUE ESTA INCOMPLETO ESCRIBIR QUIEN BATALLA, RESULTADO FINAL...
+    println("Ha ganado el distrito "+tableroJuego.quienGana()+"\n")
 
+    tableroJuego.mostrarTablero()
 }

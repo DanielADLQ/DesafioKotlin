@@ -33,6 +33,8 @@ class Tributo(var vida:Int, var fuerza:Int, var distrito:String) {
     }
     fun combatir(t2:Tributo):Int{ //-1 no combate, 0 gana el que ataca, 2 gana el otro
         var ganador:Int=-1
+        println("Tributo1: Fuerza = "+this.fuerza+", vida = "+this.vida+", distrito = "+this.distrito)
+        println("Tributo2: Fuerza = "+t2.fuerza+", vida = "+t2.vida+", distrito = "+t2.distrito)
         if(this.fuerza>t2.fuerza){
             ganador=0
         }else if(this.fuerza<t2.fuerza){
@@ -90,12 +92,13 @@ class Tributo(var vida:Int, var fuerza:Int, var distrito:String) {
                             }
 
                         }else{ //Si encuentra un tributo
-                            println("COMBATE!")
+                            println("COMBATE!\n")
                             ganador=this.combatir(tableroJuego.tablero[posH+movH][posV+movV] as Tributo) //Devuelve 0 o 1
                             when(ganador){
                                 0 -> { //Gana el que ataca y ocupa la nueva posicion, muere el otro
                                     c.listaTributosMuertos.add(tableroJuego.tablero[posH+movH][posV+movV] as Tributo)
                                     tableroJuego.tablero[posH+movH][posV+movV]=tableroJuego.tablero[posH][posV]
+                                    tableroJuego.tablero[posH][posV]=null
                                 }
                                 1 -> { //Muere el que se queria mover, el otro se queda en su sitio
                                     c.listaTributosMuertos.add(tableroJuego.tablero[posH][posV] as Tributo)

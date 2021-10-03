@@ -72,4 +72,16 @@ class Mapa { //ME DA PROBLEMAS
         println()
     }
 
+    fun quienGana():String{
+        var distritoGanador=""
+        for(i in 0..filas-1){
+            for(j in 0..columnas-1) {
+                if(this.tablero[i][j] is Tributo){
+                    distritoGanador = (this.tablero[i][j] as Tributo).distrito
+                }
+            }
+        }
+        return distritoGanador
+    }
+
 }
